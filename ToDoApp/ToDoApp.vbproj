@@ -106,19 +106,6 @@
     <Compile Include="AddingTask.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddTask.Designer.vb">
-      <DependentUpon>AddTask.vb</DependentUpon>
-    </Compile>
-    <Compile Include="AddTask.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Login.Designer.vb">
       <DependentUpon>Login.vb</DependentUpon>
     </Compile>
@@ -156,12 +143,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="TaskDetails.Designer.vb">
-      <DependentUpon>TaskDetails.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TaskDetails.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="TaskDetails1.Designer.vb">
       <DependentUpon>TaskDetails1.vb</DependentUpon>
     </Compile>
@@ -194,12 +175,6 @@
     <EmbeddedResource Include="AddingTask.resx">
       <DependentUpon>AddingTask.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddTask.resx">
-      <DependentUpon>AddTask.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.vb</DependentUpon>
     </EmbeddedResource>
@@ -212,9 +187,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TaskDetails0.resx">
       <DependentUpon>TaskDetails0.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TaskDetails.resx">
-      <DependentUpon>TaskDetails.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MyTasks.resx">
       <DependentUpon>MyTasks.vb</DependentUpon>
@@ -260,6 +232,10 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ImageCollection\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

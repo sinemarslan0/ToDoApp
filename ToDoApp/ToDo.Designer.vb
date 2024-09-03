@@ -73,23 +73,32 @@ Partial Class ToDo
         '
         'chkboxTasks
         '
+        Me.chkboxTasks.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.UserDefined
         Me.chkboxTasks.ItemPadding = New System.Windows.Forms.Padding(12)
         Me.chkboxTasks.Location = New System.Drawing.Point(49, 129)
         Me.chkboxTasks.Name = "chkboxTasks"
+        Me.chkboxTasks.PictureChecked = CType(resources.GetObject("chkboxTasks.PictureChecked"), System.Drawing.Image)
+        Me.chkboxTasks.PictureUnchecked = CType(resources.GetObject("chkboxTasks.PictureUnchecked"), System.Drawing.Image)
         Me.chkboxTasks.Size = New System.Drawing.Size(350, 344)
         Me.chkboxTasks.TabIndex = 7
         '
         'btnAdd
         '
+        Me.btnAdd.Appearance.Font = New System.Drawing.Font("Tahoma", 8.0!)
+        Me.btnAdd.Appearance.ForeColor = System.Drawing.Color.DarkGreen
+        Me.btnAdd.Appearance.Options.UseFont = True
+        Me.btnAdd.Appearance.Options.UseForeColor = True
         Me.btnAdd.ImageOptions.SvgImage = CType(resources.GetObject("btnAdd.ImageOptions.SvgImage"), DevExpress.Utils.Svg.SvgImage)
-        Me.btnAdd.Location = New System.Drawing.Point(261, 17)
+        Me.btnAdd.Location = New System.Drawing.Point(261, 31)
         Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(138, 52)
+        Me.btnAdd.Size = New System.Drawing.Size(138, 38)
         Me.btnAdd.TabIndex = 12
         Me.btnAdd.Text = "Add New Task"
         '
         'ToDo
         '
+        Me.Appearance.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.Appearance.Options.UseBackColor = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(448, 560)

@@ -5,47 +5,49 @@ Public Class Login
         Dim username As String = txtUsername.Text
         Dim password As String = txtPassword.Text
 
-        ' Define the connection string
+        'Connection string
         Dim connectionString As String = "Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
 
-        ' Define the query to check the user's credentials
+        'Query to check the user's credentials
         Dim query As String = "SELECT IsAdmin FROM tblUsers WHERE Username = @username AND Password = @password"
 
-        ' Create a new SQL connection
+        'New SQL connection
         Using conn As New SqlConnection(connectionString)
-            ' Create a new SQL command
+            'New SQL command
             Using cmd As New SqlCommand(query, conn)
-                ' Add parameters to prevent SQL injection
+                'Parameters to prevent SQL injection
                 cmd.Parameters.AddWithValue("@username", username)
                 cmd.Parameters.AddWithValue("@password", password)
 
-                ' Open the connection
                 conn.Open()
 
-                ' Execute the command and retrieve the IsAdmin value
+                'Retrieve the IsAdmin value
                 Dim result As Object = cmd.ExecuteScalar()
 
-                ' Check if the result is not null (meaning the username and password are correct)
+                'Check if the result is not null
                 If result IsNot Nothing Then
                     Dim isAdmin As Boolean = Convert.ToBoolean(result)
 
-                    ' Open the appropriate form based on the IsAdmin value
+                    'Open the appropriate form based on the IsAdmin value
                     If isAdmin Then
-                        ' User is an admin, open mytasks.vb
+                        'User is an admin
                         MyTasks.Show()
                     Else
-                        ' User is not an admin, open todo.vb
-                        Dim userForm As New ToDo
-                        userForm.Show()
+                        'User is not an admin
+                        ToDo.Show()
                     End If
 
-                    ' Hide the login form
+                    'Hide the login form
                     Me.Hide()
                 Else
-                    ' If the result is null, display an error message
+                    'If the result is null
                     MessageBox.Show("Invalid username or password.")
                 End If
             End Using
         End Using
+    End Sub
+
+    Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
     End Sub
 End Class

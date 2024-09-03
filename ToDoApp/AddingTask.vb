@@ -3,11 +3,10 @@ Imports System.Data.SqlClient
 Imports System.IO
 Imports System.Net
 Imports System.Net.Mail
+Imports System.Threading
 
 Public Class AddingTask
-    Private Sub AddingTask_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
+    Public Event TaskAdded()
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
@@ -15,12 +14,15 @@ Public Class AddingTask
 
         cmd.Parameters.AddWithValue("@Title", txtTitle.Text)
         cmd.Parameters.AddWithValue("@Description", txtDescription.Text)
-        'cmd.Parameters.AddWithValue("@IsCompleted", ToggleSwitch1.IsOn)
+        'Set IsCompleted to 0 by default (new task cannot be in the completed state)
+        cmd.Parameters.AddWithValue("@IsCompleted", 0)
+
         If picImage.Image IsNot Nothing Then
             Dim photoBytes As Byte() = ImageToByteArray(picImage.Image)
             cmd.Parameters.AddWithValue("@Photograph", photoBytes)
         Else
-            cmd.Parameters.AddWithValue("@Photograph", DBNull.Value)
+            'Define the type as varbinary(max) for NULL
+            cmd.Parameters.Add("@Photograph", SqlDbType.VarBinary, -1).Value = DBNull.Value
         End If
 
         Try
@@ -28,9 +30,10 @@ Public Class AddingTask
             cmd.ExecuteNonQuery()
             MessageBox.Show("The task has been successfully registered in the system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-            'LoadTasksIntoCheckedListBox()
+            'Notify other forms that a task has been added
+            RaiseEvent TaskAdded()
 
-            ' Sending email after the task is successfully added
+            'Sending email after the task is successfully added
             SendEmailNotification(txtTitle.Text, txtDescription.Text)
 
         Catch ex As Exception
@@ -38,6 +41,8 @@ Public Class AddingTask
         Finally
             con.Close()
         End Try
+
+        Me.Close()
     End Sub
 
     Private Sub SendEmailNotification(ByVal taskTitle As String, ByVal taskDescription As String)
@@ -70,9 +75,9 @@ Public Class AddingTask
 
         xtraOpenFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png"
 
-        ' Show the XtraOpenFileDialog and check if the user clicked OK
+        'Show the XtraOpenFileDialog and check if the user clicked OK
         If xtraOpenFileDialog.ShowDialog() = DialogResult.OK Then
-            ' Load the selected image into picture box
+            'Load the selected image into picture box
             picImage.Image = Image.FromFile(xtraOpenFileDialog.FileName)
             picImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom
         End If

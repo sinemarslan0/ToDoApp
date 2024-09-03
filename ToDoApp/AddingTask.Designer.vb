@@ -40,7 +40,7 @@ Partial Class AddingTask
         '
         'txtTitle
         '
-        Me.txtTitle.Location = New System.Drawing.Point(57, 82)
+        Me.txtTitle.Location = New System.Drawing.Point(55, 92)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.Size = New System.Drawing.Size(320, 22)
         Me.txtTitle.TabIndex = 0
@@ -49,7 +49,7 @@ Partial Class AddingTask
         '
         Me.btnSave.ImageOptions.Image = CType(resources.GetObject("btnSave.ImageOptions.Image"), System.Drawing.Image)
         Me.btnSave.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.TopCenter
-        Me.btnSave.Location = New System.Drawing.Point(327, 466)
+        Me.btnSave.Location = New System.Drawing.Point(325, 476)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
         Me.btnSave.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -59,9 +59,9 @@ Partial Class AddingTask
         '
         'btnAttach
         '
-        Me.btnAttach.ImageOptions.Image = CType(resources.GetObject("SimpleButton3.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnAttach.ImageOptions.Image = CType(resources.GetObject("btnAttach.ImageOptions.Image"), System.Drawing.Image)
         Me.btnAttach.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter
-        Me.btnAttach.Location = New System.Drawing.Point(172, 307)
+        Me.btnAttach.Location = New System.Drawing.Point(170, 317)
         Me.btnAttach.Name = "btnAttach"
         Me.btnAttach.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
         Me.btnAttach.Size = New System.Drawing.Size(40, 41)
@@ -71,7 +71,7 @@ Partial Class AddingTask
         '
         Me.lblTitle.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblTitle.Appearance.Options.UseFont = True
-        Me.lblTitle.Location = New System.Drawing.Point(57, 43)
+        Me.lblTitle.Location = New System.Drawing.Point(55, 53)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(47, 24)
         Me.lblTitle.TabIndex = 5
@@ -81,7 +81,7 @@ Partial Class AddingTask
         '
         Me.lblDescription.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblDescription.Appearance.Options.UseFont = True
-        Me.lblDescription.Location = New System.Drawing.Point(57, 122)
+        Me.lblDescription.Location = New System.Drawing.Point(55, 132)
         Me.lblDescription.Name = "lblDescription"
         Me.lblDescription.Size = New System.Drawing.Size(107, 24)
         Me.lblDescription.TabIndex = 6
@@ -89,7 +89,7 @@ Partial Class AddingTask
         '
         'picImage
         '
-        Me.picImage.Location = New System.Drawing.Point(57, 348)
+        Me.picImage.Location = New System.Drawing.Point(55, 358)
         Me.picImage.Name = "picImage"
         Me.picImage.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.[Auto]
         Me.picImage.Size = New System.Drawing.Size(246, 162)
@@ -99,7 +99,7 @@ Partial Class AddingTask
         '
         Me.lblPhotograph.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblPhotograph.Appearance.Options.UseFont = True
-        Me.lblPhotograph.Location = New System.Drawing.Point(57, 318)
+        Me.lblPhotograph.Location = New System.Drawing.Point(55, 328)
         Me.lblPhotograph.Name = "lblPhotograph"
         Me.lblPhotograph.Size = New System.Drawing.Size(109, 24)
         Me.lblPhotograph.TabIndex = 9
@@ -107,18 +107,21 @@ Partial Class AddingTask
         '
         'txtDescription
         '
-        Me.txtDescription.Location = New System.Drawing.Point(57, 152)
+        Me.txtDescription.Location = New System.Drawing.Point(55, 162)
         Me.txtDescription.Name = "txtDescription"
         Me.txtDescription.Size = New System.Drawing.Size(320, 149)
         Me.txtDescription.TabIndex = 10
         '
         'lblMainTitle
         '
-        Me.lblMainTitle.Appearance.Font = New System.Drawing.Font("Tahoma", 16.0!, CType((System.Drawing.FontStyle.Italic Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
+        Me.lblMainTitle.Appearance.Font = New System.Drawing.Font("Tahoma", 16.0!, CType(((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic) _
+                Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
+        Me.lblMainTitle.Appearance.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.lblMainTitle.Appearance.Options.UseFont = True
+        Me.lblMainTitle.Appearance.Options.UseForeColor = True
         Me.lblMainTitle.Location = New System.Drawing.Point(57, 4)
         Me.lblMainTitle.Name = "lblMainTitle"
-        Me.lblMainTitle.Size = New System.Drawing.Size(174, 33)
+        Me.lblMainTitle.Size = New System.Drawing.Size(197, 33)
         Me.lblMainTitle.TabIndex = 11
         Me.lblMainTitle.Text = "Add New Task"
         '

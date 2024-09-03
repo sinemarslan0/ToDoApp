@@ -1,5 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
+Imports System.Net
+Imports System.Net.Mail
 Imports System.Threading
 
 Public Class TaskDetails1
@@ -17,7 +19,7 @@ Public Class TaskDetails1
         Try
             con.Open()
             reader = cmd.ExecuteReader()
-            While reader.Read()
+            If reader.Read() Then
                 txtTitle.Text = reader("Title").ToString()
                 txtDescription.Text = reader("Description").ToString()
 
@@ -28,9 +30,10 @@ Public Class TaskDetails1
                     picImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom
                 End If
 
-                chkDone.Checked = CBool(reader("IsCompleted"))
+                'Check Edit (Done button) initilaize
+                InitialIsCompleted = CBool(reader("IsCompleted"))
                 chkDone.Checked = InitialIsCompleted
-            End While
+            End If
         Catch ex As Exception
             MessageBox.Show("An error occurred while loading task details: " & ex.Message)
         Finally
@@ -39,7 +42,11 @@ Public Class TaskDetails1
     End Sub
 
     Private Sub btnSaveClose_Click(sender As Object, e As EventArgs) Handles btnSaveClose.Click
-        ' Check if IsCompleted state has changed
+        Dim taskTitle As String = txtTitle.Text
+        Dim taskDescription As String = txtDescription.Text
+        Dim isCompleted As Boolean = chkDone.Checked
+
+        'If IsCompleted state has changed
         If chkDone.Checked <> InitialIsCompleted Then
             Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
             Dim cmd As SqlCommand = New SqlCommand("UPDATE TblTasks SET IsCompleted = @IsCompleted WHERE ID = @ID", con)
@@ -50,6 +57,8 @@ Public Class TaskDetails1
                 con.Open()
                 cmd.ExecuteNonQuery()
                 MessageBox.Show("Task updated successfully!")
+                'Sending email after the task is completed
+                SendEmailNotification(taskTitle, taskDescription)
             Catch ex As Exception
                 MessageBox.Show("An error occurred while updating task: " & ex.Message)
             Finally
@@ -57,5 +66,30 @@ Public Class TaskDetails1
             End Try
         End If
         Me.Close()
+    End Sub
+
+    Private Sub SendEmailNotification(ByVal taskTitle As String, ByVal taskDescription As String)
+        Try
+            Dim smtpClient As New SmtpClient("smtp.gmail.com") With {
+                .Port = 587,
+                .Credentials = New NetworkCredential("rsln.snm@gmail.com", "pmps yzuw utyn vysl"),
+                .EnableSsl = True
+            }
+
+            Dim mailMessage As New MailMessage() With {
+                .From = New MailAddress("rsln.snm@gmail.com"),
+                .Subject = "Task Completed",
+                .Body = $"A task has been marked as completed: {taskTitle}{Environment.NewLine}Description: {taskDescription}",
+                .IsBodyHtml = False
+            }
+
+            mailMessage.To.Add("sinemarslan089@gmail.com")
+
+            smtpClient.Send(mailMessage)
+            MessageBox.Show("Notification email sent successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        Catch ex As Exception
+            MessageBox.Show("Failed to send email: " & ex.Message)
+        End Try
     End Sub
 End Class

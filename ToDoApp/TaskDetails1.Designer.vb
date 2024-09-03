@@ -36,6 +36,8 @@ Partial Class TaskDetails1
         '
         'btnSaveClose
         '
+        Me.btnSaveClose.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
+        Me.btnSaveClose.Appearance.Options.UseFont = True
         Me.btnSaveClose.Location = New System.Drawing.Point(294, 494)
         Me.btnSaveClose.Name = "btnSaveClose"
         Me.btnSaveClose.Size = New System.Drawing.Size(111, 29)
@@ -122,7 +124,7 @@ Partial Class TaskDetails1
         Me.Controls.Add(Me.lblTitle)
         Me.IconOptions.LargeImage = CType(resources.GetObject("TaskDetails1.IconOptions.LargeImage"), System.Drawing.Image)
         Me.Name = "TaskDetails1"
-        Me.Text = "TaskDetails1"
+        Me.Text = "TaskDetails"
         CType(Me.chkDone.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).EndInit()

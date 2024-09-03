@@ -34,7 +34,9 @@ Partial Class Login
         Me.txtUsername.EditValue = ""
         Me.txtUsername.Location = New System.Drawing.Point(144, 78)
         Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(218, 22)
+        Me.txtUsername.Properties.Appearance.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.txtUsername.Properties.Appearance.Options.UseFont = True
+        Me.txtUsername.Size = New System.Drawing.Size(218, 24)
         Me.txtUsername.TabIndex = 0
         '
         'txtPassword
@@ -42,15 +44,17 @@ Partial Class Login
         Me.txtPassword.EditValue = ""
         Me.txtPassword.Location = New System.Drawing.Point(144, 130)
         Me.txtPassword.Name = "txtPassword"
+        Me.txtPassword.Properties.Appearance.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.txtPassword.Properties.Appearance.Options.UseFont = True
         Me.txtPassword.Properties.UseSystemPasswordChar = True
-        Me.txtPassword.Size = New System.Drawing.Size(218, 22)
+        Me.txtPassword.Size = New System.Drawing.Size(218, 24)
         Me.txtPassword.TabIndex = 1
         Me.txtPassword.Tag = ""
         '
         'btnLogin
         '
         Me.btnLogin.Appearance.BackColor = System.Drawing.Color.LightGreen
-        Me.btnLogin.Appearance.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.btnLogin.Appearance.Font = New System.Drawing.Font("Tahoma", 10.0!)
         Me.btnLogin.Appearance.Options.UseBackColor = True
         Me.btnLogin.Appearance.Options.UseFont = True
         Me.btnLogin.Location = New System.Drawing.Point(144, 174)
@@ -61,17 +65,21 @@ Partial Class Login
         '
         'lblUsername
         '
-        Me.lblUsername.Location = New System.Drawing.Point(75, 81)
+        Me.lblUsername.Appearance.Font = New System.Drawing.Font("Tahoma", 10.0!)
+        Me.lblUsername.Appearance.Options.UseFont = True
+        Me.lblUsername.Location = New System.Drawing.Point(58, 77)
         Me.lblUsername.Name = "lblUsername"
-        Me.lblUsername.Size = New System.Drawing.Size(63, 16)
+        Me.lblUsername.Size = New System.Drawing.Size(81, 21)
         Me.lblUsername.TabIndex = 3
         Me.lblUsername.Text = "Username:"
         '
         'lblPassword
         '
-        Me.lblPassword.Location = New System.Drawing.Point(78, 133)
+        Me.lblPassword.Appearance.Font = New System.Drawing.Font("Tahoma", 10.0!)
+        Me.lblPassword.Appearance.Options.UseFont = True
+        Me.lblPassword.Location = New System.Drawing.Point(61, 129)
         Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(60, 16)
+        Me.lblPassword.Size = New System.Drawing.Size(77, 21)
         Me.lblPassword.TabIndex = 4
         Me.lblPassword.Text = "Password:"
         '

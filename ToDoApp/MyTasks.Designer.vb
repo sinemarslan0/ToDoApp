@@ -20,31 +20,15 @@ Partial Class MyTasks
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyTasks))
-        Me.chkboxTasks = New DevExpress.XtraEditors.CheckedListBoxControl()
-        Me.srchTask = New DevExpress.XtraEditors.SearchControl()
         Me.lblToDo = New DevExpress.XtraEditors.LabelControl()
-        Me.ToggleSwitch1 = New DevExpress.XtraEditors.ToggleSwitch()
         Me.btnShow = New DevExpress.XtraEditors.SimpleButton()
-        CType(Me.chkboxTasks, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.srchTask.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ToggleSwitch1 = New DevExpress.XtraEditors.ToggleSwitch()
+        Me.srchTask = New DevExpress.XtraEditors.SearchControl()
+        Me.chkboxTasks = New DevExpress.XtraEditors.CheckedListBoxControl()
         CType(Me.ToggleSwitch1.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.srchTask.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkboxTasks, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'chkboxTasks
-        '
-        Me.chkboxTasks.ItemPadding = New System.Windows.Forms.Padding(12)
-        Me.chkboxTasks.Location = New System.Drawing.Point(47, 126)
-        Me.chkboxTasks.Name = "chkboxTasks"
-        Me.chkboxTasks.Size = New System.Drawing.Size(350, 350)
-        Me.chkboxTasks.TabIndex = 0
-        '
-        'srchTask
-        '
-        Me.srchTask.Location = New System.Drawing.Point(47, 88)
-        Me.srchTask.Name = "srchTask"
-        Me.srchTask.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Repository.ClearButton(), New DevExpress.XtraEditors.Repository.SearchButton()})
-        Me.srchTask.Size = New System.Drawing.Size(350, 22)
-        Me.srchTask.TabIndex = 1
         '
         'lblToDo
         '
@@ -59,24 +43,51 @@ Partial Class MyTasks
         Me.lblToDo.TabIndex = 4
         Me.lblToDo.Text = "MY TASKS"
         '
+        'btnShow
+        '
+        Me.btnShow.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
+        Me.btnShow.Appearance.Options.UseFont = True
+        Me.btnShow.ImageOptions.SvgImage = CType(resources.GetObject("btnShow.ImageOptions.SvgImage"), DevExpress.Utils.Svg.SvgImage)
+        Me.btnShow.Location = New System.Drawing.Point(268, 486)
+        Me.btnShow.Name = "btnShow"
+        Me.btnShow.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
+        Me.btnShow.Size = New System.Drawing.Size(129, 38)
+        Me.btnShow.TabIndex = 6
+        Me.btnShow.Text = "Show Details"
+        '
         'ToggleSwitch1
         '
         Me.ToggleSwitch1.Location = New System.Drawing.Point(47, 494)
         Me.ToggleSwitch1.Name = "ToggleSwitch1"
+        Me.ToggleSwitch1.Properties.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
+        Me.ToggleSwitch1.Properties.Appearance.Options.UseFont = True
         Me.ToggleSwitch1.Properties.OffText = "Show All"
         Me.ToggleSwitch1.Properties.OnText = "Not Completed"
         Me.ToggleSwitch1.Size = New System.Drawing.Size(141, 24)
         Me.ToggleSwitch1.TabIndex = 5
         '
-        'btnShow
+        'srchTask
         '
-        Me.btnShow.ImageOptions.SvgImage = CType(resources.GetObject("btnShow.ImageOptions.SvgImage"), DevExpress.Utils.Svg.SvgImage)
-        Me.btnShow.Location = New System.Drawing.Point(274, 487)
-        Me.btnShow.Name = "btnShow"
-        Me.btnShow.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
-        Me.btnShow.Size = New System.Drawing.Size(123, 38)
-        Me.btnShow.TabIndex = 6
-        Me.btnShow.Text = "Show Details"
+        Me.srchTask.Location = New System.Drawing.Point(47, 88)
+        Me.srchTask.Name = "srchTask"
+        Me.srchTask.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Repository.ClearButton(), New DevExpress.XtraEditors.Repository.SearchButton()})
+        Me.srchTask.Size = New System.Drawing.Size(350, 22)
+        Me.srchTask.TabIndex = 1
+        '
+        'chkboxTasks
+        '
+        Me.chkboxTasks.Appearance.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.chkboxTasks.Appearance.Options.UseFont = True
+        Me.chkboxTasks.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.UserDefined
+        Me.chkboxTasks.ItemPadding = New System.Windows.Forms.Padding(12)
+        Me.chkboxTasks.Location = New System.Drawing.Point(47, 126)
+        Me.chkboxTasks.Margin = New System.Windows.Forms.Padding(5)
+        Me.chkboxTasks.Name = "chkboxTasks"
+        Me.chkboxTasks.Padding = New System.Windows.Forms.Padding(5)
+        Me.chkboxTasks.PictureChecked = CType(resources.GetObject("chkboxTasks.PictureChecked"), System.Drawing.Image)
+        Me.chkboxTasks.PictureUnchecked = CType(resources.GetObject("chkboxTasks.PictureUnchecked"), System.Drawing.Image)
+        Me.chkboxTasks.Size = New System.Drawing.Size(350, 352)
+        Me.chkboxTasks.TabIndex = 0
         '
         'MyTasks
         '
@@ -91,9 +102,9 @@ Partial Class MyTasks
         Me.IconOptions.LargeImage = CType(resources.GetObject("MyTasks.IconOptions.LargeImage"), System.Drawing.Image)
         Me.Name = "MyTasks"
         Me.Text = "ToDo"
-        CType(Me.chkboxTasks, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.srchTask.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ToggleSwitch1.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.srchTask.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkboxTasks, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
