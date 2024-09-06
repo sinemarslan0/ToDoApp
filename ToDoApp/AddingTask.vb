@@ -10,7 +10,7 @@ Public Class AddingTask
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("INSERT INTO TblTasks (Title, Description, Photograph, IsCompleted) VALUES (@Title, @Description, @Photograph, @IsCompleted)", con)
+        Dim cmd As SqlCommand = New SqlCommand("INSERT INTO TblTask (Title, Description, Photograph, IsCompleted, CreatedTime) VALUES (@Title, @Description, @Photograph, @IsCompleted, @CreatedTime)", con)
 
         cmd.Parameters.AddWithValue("@Title", txtTitle.Text)
         cmd.Parameters.AddWithValue("@Description", txtDescription.Text)
@@ -24,6 +24,9 @@ Public Class AddingTask
             'Define the type as varbinary(max) for NULL
             cmd.Parameters.Add("@Photograph", SqlDbType.VarBinary, -1).Value = DBNull.Value
         End If
+
+        'Set CreatedTime to the current date And time
+        cmd.Parameters.AddWithValue("@CreatedTime", DateTime.Now)
 
         Try
             con.Open()

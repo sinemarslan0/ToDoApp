@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class TaskDetails0
     Inherits DevExpress.XtraEditors.XtraForm
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,7 +17,7 @@ Partial Class TaskDetails0
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TaskDetails0))
         Me.lblTitle = New DevExpress.XtraEditors.LabelControl()
@@ -80,7 +80,7 @@ Partial Class TaskDetails0
         Me.btnSave.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
         Me.btnSave.Appearance.Options.UseFont = True
         Me.btnSave.ImageOptions.Image = CType(resources.GetObject("btnSave.ImageOptions.Image"), System.Drawing.Image)
-        Me.btnSave.Location = New System.Drawing.Point(328, 500)
+        Me.btnSave.Location = New System.Drawing.Point(344, 500)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
         Me.btnSave.Size = New System.Drawing.Size(81, 42)
@@ -93,7 +93,7 @@ Partial Class TaskDetails0
         Me.picImage.Name = "picImage"
         Me.picImage.Properties.ReadOnly = True
         Me.picImage.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.[Auto]
-        Me.picImage.Size = New System.Drawing.Size(259, 149)
+        Me.picImage.Size = New System.Drawing.Size(262, 149)
         Me.picImage.TabIndex = 5
         '
         'txtDescription

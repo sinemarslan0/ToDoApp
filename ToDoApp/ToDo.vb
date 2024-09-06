@@ -25,7 +25,7 @@ Public Class ToDo
 
     Private Sub LoadTasks()
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT ID, Title, Description, IsCompleted FROM TblTasks", con)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, IsCompleted FROM TblTask", con)
         Dim adapter As New SqlDataAdapter(cmd)
         tasks.Clear()
         adapter.Fill(tasks)
@@ -34,15 +34,20 @@ Public Class ToDo
         'Store task states
         originalTaskStates.Clear()
         For Each row As DataRow In tasks.Rows
-            originalTaskStates(row.Field(Of Integer)("ID")) = row.Field(Of Boolean)("IsCompleted")
+            'Conversion of the IsCompleted field to Boolean
+            Dim isCompleted As Boolean = Convert.ToBoolean(row("IsCompleted"))
+            originalTaskStates(row.Field(Of Integer)("TaskID")) = isCompleted
         Next
     End Sub
 
     Private Sub InitializeCheckedStates()
         For i As Integer = 0 To chkboxTasks.ItemCount - 1
             Dim itemID As Integer = CType(chkboxTasks.GetItemValue(i), Integer)
-            Dim isChecked As Boolean = originalTaskStates(itemID)
-            chkboxTasks.SetItemChecked(i, isChecked)
+            'Retrieve the original state of the task and set the checked state accordingly
+            If originalTaskStates.ContainsKey(itemID) Then
+                Dim isChecked As Boolean = originalTaskStates(itemID)
+                chkboxTasks.SetItemChecked(i, isChecked)
+            End If
         Next
     End Sub
 

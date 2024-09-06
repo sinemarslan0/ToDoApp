@@ -13,8 +13,8 @@ Public Class TaskDetails0
 
     Private Sub LoadTaskDetails(id As Integer)
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT ID, Title, Description, Photograph, IsCompleted FROM TblTasks WHERE ID = @ID", con)
-        cmd.Parameters.AddWithValue("@ID", id)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted FROM TblTask WHERE TaskID = @TaskID", con)
+        cmd.Parameters.AddWithValue("@TaskID", id)
         Dim reader As SqlDataReader
         Try
             con.Open()
@@ -49,8 +49,8 @@ Public Class TaskDetails0
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         'Save changes to the database
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("UPDATE TblTasks SET Title = @Title, Description = @Description WHERE ID = @ID", con)
-        cmd.Parameters.AddWithValue("@ID", TaskID)
+        Dim cmd As SqlCommand = New SqlCommand("UPDATE TblTask SET Title = @Title, Description = @Description WHERE TaskID = @TaskID", con)
+        cmd.Parameters.AddWithValue("@TaskID", TaskID)
         cmd.Parameters.AddWithValue("@Title", txtTitle.Text)
         cmd.Parameters.AddWithValue("@Description", txtDescription.Text)
 

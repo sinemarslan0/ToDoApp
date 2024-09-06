@@ -20,7 +20,7 @@ Partial Class MyTasks
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyTasks))
-        Me.lblToDo = New DevExpress.XtraEditors.LabelControl()
+        Me.lblTasks = New DevExpress.XtraEditors.LabelControl()
         Me.btnShow = New DevExpress.XtraEditors.SimpleButton()
         Me.ToggleSwitch1 = New DevExpress.XtraEditors.ToggleSwitch()
         Me.srchTask = New DevExpress.XtraEditors.SearchControl()
@@ -30,18 +30,18 @@ Partial Class MyTasks
         CType(Me.chkboxTasks, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'lblToDo
+        'lblTasks
         '
-        Me.lblToDo.Appearance.Font = New System.Drawing.Font("Tahoma", 18.0!, CType(((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic) _
+        Me.lblTasks.Appearance.Font = New System.Drawing.Font("Tahoma", 18.0!, CType(((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic) _
                 Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle))
-        Me.lblToDo.Appearance.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.lblToDo.Appearance.Options.UseFont = True
-        Me.lblToDo.Appearance.Options.UseForeColor = True
-        Me.lblToDo.Location = New System.Drawing.Point(47, 30)
-        Me.lblToDo.Name = "lblToDo"
-        Me.lblToDo.Size = New System.Drawing.Size(160, 36)
-        Me.lblToDo.TabIndex = 4
-        Me.lblToDo.Text = "MY TASKS"
+        Me.lblTasks.Appearance.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.lblTasks.Appearance.Options.UseFont = True
+        Me.lblTasks.Appearance.Options.UseForeColor = True
+        Me.lblTasks.Location = New System.Drawing.Point(47, 30)
+        Me.lblTasks.Name = "lblTasks"
+        Me.lblTasks.Size = New System.Drawing.Size(104, 36)
+        Me.lblTasks.TabIndex = 4
+        Me.lblTasks.Text = "TASKS"
         '
         'btnShow
         '
@@ -96,7 +96,7 @@ Partial Class MyTasks
         Me.ClientSize = New System.Drawing.Size(448, 560)
         Me.Controls.Add(Me.btnShow)
         Me.Controls.Add(Me.ToggleSwitch1)
-        Me.Controls.Add(Me.lblToDo)
+        Me.Controls.Add(Me.lblTasks)
         Me.Controls.Add(Me.srchTask)
         Me.Controls.Add(Me.chkboxTasks)
         Me.IconOptions.LargeImage = CType(resources.GetObject("MyTasks.IconOptions.LargeImage"), System.Drawing.Image)
@@ -112,7 +112,7 @@ Partial Class MyTasks
 
     Friend WithEvents chkboxTasks As DevExpress.XtraEditors.CheckedListBoxControl
     Friend WithEvents srchTask As DevExpress.XtraEditors.SearchControl
-    Friend WithEvents lblToDo As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents lblTasks As DevExpress.XtraEditors.LabelControl
     Friend WithEvents ToggleSwitch1 As DevExpress.XtraEditors.ToggleSwitch
     Friend WithEvents btnShow As DevExpress.XtraEditors.SimpleButton
 End Class

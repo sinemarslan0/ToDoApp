@@ -1,6 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports DevExpress.XtraEditors
 Imports DevExpress.XtraEditors.Controls
+Imports DevExpress.XtraGrid.Views.Base.ViewInfo
 
 Public Class MyTasks
     Private bindingSource As New BindingSource()
@@ -11,7 +12,7 @@ Public Class MyTasks
         'Set up the CheckedListBoxControl data source
         chkboxTasks.DataSource = bindingSource
         chkboxTasks.DisplayMember = "Title"
-        chkboxTasks.ValueMember = "ID"
+        chkboxTasks.ValueMember = "TaskID"
 
         LoadTasksIntoDataTable()
 
@@ -27,16 +28,33 @@ Public Class MyTasks
 
     Private Sub LoadTasksIntoDataTable()
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT ID, Title, Description, IsCompleted FROM TblTasks", con)
+
+        ' SQL query to fetch tasks
+        Dim query As String
+        If Login.LoggedInRoleID = 1 OrElse Login.LoggedInRoleID = 2 Then
+            ' Company user, Admin, or Team Lead sees all tasks
+            query = "SELECT TaskID, Title, Description, IsCompleted FROM TblTask"
+        Else
+            ' Regular employees (developers, analysts) see only tasks assigned to them
+            query = "SELECT TaskID, Title, Description, IsCompleted FROM TblTask WHERE AssignedTo = @UserID"
+        End If
+
+        ' Create the command and set the parameter for UserID
+        Dim cmd As SqlCommand = New SqlCommand(query, con)
+        If Login.LoggedInRoleID <> 0 AndAlso Login.LoggedInRoleID <> 1 AndAlso Login.LoggedInRoleID <> 2 Then
+            cmd.Parameters.AddWithValue("@UserID", Login.LoggedInUserID) ' Assuming you're storing the logged-in user's ID
+        End If
+
+        ' Execute and fill the DataTable
         Dim adapter As New SqlDataAdapter(cmd)
         tasks.Clear()
         adapter.Fill(tasks)
         bindingSource.DataSource = tasks
 
-        'Store task states
+        ' Store task states
         originalTaskStates.Clear()
         For Each row As DataRow In tasks.Rows
-            originalTaskStates(row.Field(Of Integer)("ID")) = row.Field(Of Boolean)("IsCompleted")
+            originalTaskStates(row.Field(Of Integer)("TaskID")) = row.Field(Of Boolean)("IsCompleted")
         Next
     End Sub
 

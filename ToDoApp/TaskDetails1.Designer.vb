@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class TaskDetails1
     Inherits DevExpress.XtraEditors.XtraForm
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,7 +17,7 @@ Partial Class TaskDetails1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TaskDetails1))
         Me.btnSaveClose = New DevExpress.XtraEditors.SimpleButton()
@@ -28,17 +28,24 @@ Partial Class TaskDetails1
         Me.lblPhotograph = New DevExpress.XtraEditors.LabelControl()
         Me.lblDescription = New DevExpress.XtraEditors.LabelControl()
         Me.lblTitle = New DevExpress.XtraEditors.LabelControl()
+        Me.lblAssign = New DevExpress.XtraEditors.LabelControl()
+        Me.GridLookUpEdit1 = New DevExpress.XtraEditors.GridLookUpEdit()
+        Me.GridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView()
         CType(Me.chkDone.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtTitle.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridLookUpEdit1.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridLookUpEdit1View, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnSaveClose
         '
+        Me.btnSaveClose.Appearance.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.btnSaveClose.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
+        Me.btnSaveClose.Appearance.Options.UseBackColor = True
         Me.btnSaveClose.Appearance.Options.UseFont = True
-        Me.btnSaveClose.Location = New System.Drawing.Point(294, 494)
+        Me.btnSaveClose.Location = New System.Drawing.Point(336, 511)
         Me.btnSaveClose.Name = "btnSaveClose"
         Me.btnSaveClose.Size = New System.Drawing.Size(111, 29)
         Me.btnSaveClose.TabIndex = 17
@@ -46,7 +53,7 @@ Partial Class TaskDetails1
         '
         'chkDone
         '
-        Me.chkDone.Location = New System.Drawing.Point(62, 492)
+        Me.chkDone.Location = New System.Drawing.Point(80, 512)
         Me.chkDone.Name = "chkDone"
         Me.chkDone.Properties.Appearance.Font = New System.Drawing.Font("Tahoma", 10.0!)
         Me.chkDone.Properties.Appearance.Options.UseFont = True
@@ -56,7 +63,7 @@ Partial Class TaskDetails1
         '
         'picImage
         '
-        Me.picImage.Location = New System.Drawing.Point(62, 327)
+        Me.picImage.Location = New System.Drawing.Point(77, 288)
         Me.picImage.Name = "picImage"
         Me.picImage.Properties.ReadOnly = True
         Me.picImage.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.[Auto]
@@ -65,25 +72,25 @@ Partial Class TaskDetails1
         '
         'txtDescription
         '
-        Me.txtDescription.Location = New System.Drawing.Point(62, 120)
+        Me.txtDescription.Location = New System.Drawing.Point(77, 141)
         Me.txtDescription.Name = "txtDescription"
         Me.txtDescription.Properties.ReadOnly = True
-        Me.txtDescription.Size = New System.Drawing.Size(299, 156)
+        Me.txtDescription.Size = New System.Drawing.Size(323, 108)
         Me.txtDescription.TabIndex = 13
         '
         'txtTitle
         '
-        Me.txtTitle.Location = New System.Drawing.Point(62, 54)
+        Me.txtTitle.Location = New System.Drawing.Point(77, 75)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.Properties.ReadOnly = True
-        Me.txtTitle.Size = New System.Drawing.Size(299, 22)
+        Me.txtTitle.Size = New System.Drawing.Size(323, 22)
         Me.txtTitle.TabIndex = 12
         '
         'lblPhotograph
         '
         Me.lblPhotograph.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblPhotograph.Appearance.Options.UseFont = True
-        Me.lblPhotograph.Location = New System.Drawing.Point(62, 297)
+        Me.lblPhotograph.Location = New System.Drawing.Point(77, 258)
         Me.lblPhotograph.Name = "lblPhotograph"
         Me.lblPhotograph.Size = New System.Drawing.Size(109, 24)
         Me.lblPhotograph.TabIndex = 11
@@ -93,7 +100,7 @@ Partial Class TaskDetails1
         '
         Me.lblDescription.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblDescription.Appearance.Options.UseFont = True
-        Me.lblDescription.Location = New System.Drawing.Point(62, 90)
+        Me.lblDescription.Location = New System.Drawing.Point(77, 111)
         Me.lblDescription.Name = "lblDescription"
         Me.lblDescription.Size = New System.Drawing.Size(107, 24)
         Me.lblDescription.TabIndex = 10
@@ -103,17 +110,45 @@ Partial Class TaskDetails1
         '
         Me.lblTitle.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblTitle.Appearance.Options.UseFont = True
-        Me.lblTitle.Location = New System.Drawing.Point(62, 24)
+        Me.lblTitle.Location = New System.Drawing.Point(77, 45)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(47, 24)
         Me.lblTitle.TabIndex = 9
         Me.lblTitle.Text = "Title:"
         '
+        'lblAssign
+        '
+        Me.lblAssign.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
+        Me.lblAssign.Appearance.Options.UseFont = True
+        Me.lblAssign.Location = New System.Drawing.Point(80, 442)
+        Me.lblAssign.Name = "lblAssign"
+        Me.lblAssign.Size = New System.Drawing.Size(64, 24)
+        Me.lblAssign.TabIndex = 19
+        Me.lblAssign.Text = "Assign:"
+        '
+        'GridLookUpEdit1
+        '
+        Me.GridLookUpEdit1.Location = New System.Drawing.Point(80, 472)
+        Me.GridLookUpEdit1.Name = "GridLookUpEdit1"
+        Me.GridLookUpEdit1.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.GridLookUpEdit1.Properties.PopupView = Me.GridLookUpEdit1View
+        Me.GridLookUpEdit1.Size = New System.Drawing.Size(259, 22)
+        Me.GridLookUpEdit1.TabIndex = 20
+        '
+        'GridLookUpEdit1View
+        '
+        Me.GridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus
+        Me.GridLookUpEdit1View.Name = "GridLookUpEdit1View"
+        Me.GridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = False
+        Me.GridLookUpEdit1View.OptionsView.ShowGroupPanel = False
+        '
         'TaskDetails1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(448, 560)
+        Me.ClientSize = New System.Drawing.Size(498, 610)
+        Me.Controls.Add(Me.GridLookUpEdit1)
+        Me.Controls.Add(Me.lblAssign)
         Me.Controls.Add(Me.btnSaveClose)
         Me.Controls.Add(Me.chkDone)
         Me.Controls.Add(Me.picImage)
@@ -129,6 +164,8 @@ Partial Class TaskDetails1
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtTitle.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridLookUpEdit1.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridLookUpEdit1View, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -142,4 +179,7 @@ Partial Class TaskDetails1
     Friend WithEvents lblPhotograph As DevExpress.XtraEditors.LabelControl
     Friend WithEvents lblDescription As DevExpress.XtraEditors.LabelControl
     Friend WithEvents lblTitle As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents lblAssign As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents GridLookUpEdit1 As DevExpress.XtraEditors.GridLookUpEdit
+    Friend WithEvents GridLookUpEdit1View As DevExpress.XtraGrid.Views.Grid.GridView
 End Class
