@@ -9,7 +9,7 @@ Public Class ToDo
         'CheckedListBoxControl data source
         chkboxTasks.DataSource = bindingSource
         chkboxTasks.DisplayMember = "Title"
-        chkboxTasks.ValueMember = "ID"
+        chkboxTasks.ValueMember = "TaskID"
 
         LoadTasks()
 
@@ -31,19 +31,22 @@ Public Class ToDo
         adapter.Fill(tasks)
         bindingSource.DataSource = tasks
 
-        'Store task states
+        ' Store task states
         originalTaskStates.Clear()
         For Each row As DataRow In tasks.Rows
-            'Conversion of the IsCompleted field to Boolean
+            ' Conversion of the IsCompleted field to Boolean
             Dim isCompleted As Boolean = Convert.ToBoolean(row("IsCompleted"))
             originalTaskStates(row.Field(Of Integer)("TaskID")) = isCompleted
         Next
+
+        ' Initialize item check states after loading tasks
+        InitializeCheckedStates()
     End Sub
 
     Private Sub InitializeCheckedStates()
         For i As Integer = 0 To chkboxTasks.ItemCount - 1
             Dim itemID As Integer = CType(chkboxTasks.GetItemValue(i), Integer)
-            'Retrieve the original state of the task and set the checked state accordingly
+            ' Ensure that the original state is fetched properly and then set the checked state
             If originalTaskStates.ContainsKey(itemID) Then
                 Dim isChecked As Boolean = originalTaskStates(itemID)
                 chkboxTasks.SetItemChecked(i, isChecked)
@@ -56,6 +59,9 @@ Public Class ToDo
 
         'Apply search filter
         bindingSource.Filter = $"Title LIKE '%{searchText}%'"
+
+        ' Reinitialize checked states after filtering
+        InitializeCheckedStates()
     End Sub
 
     Private Sub ToggleSwitch1_Toggled(sender As Object, e As EventArgs) Handles ToggleSwitch1.Toggled
@@ -69,7 +75,6 @@ Public Class ToDo
     Private Sub btnShow_Click(sender As Object, e As EventArgs) Handles btnShow.Click
         If chkboxTasks.SelectedIndex >= 0 Then
             Dim selectedID As Integer = CType(chkboxTasks.GetItemValue(chkboxTasks.SelectedIndex), Integer)
-            Dim detailsForm As New TaskDetails0()
             TaskDetails0.TaskID = selectedID
             TaskDetails0.Show()
         Else

@@ -99,33 +99,45 @@ Public Class TaskDetails1
             con.Open()
             cmd.ExecuteNonQuery()
 
-            'First check AssignedTo is NULL or not
-            If Not InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue Then
-                'AssignedTo was NULL but now task assigned someone
-                Dim recipientEmail As String = GetUserEmail(selectedUserID.Value)
-                If Not String.IsNullOrEmpty(recipientEmail) Then
-                    MessageBox.Show("Task assigned successfully!")
-                    SendTaskAssignmentEmail(taskTitle, taskDescription, recipientEmail)
+            'Check if the task is assigned to Software Team (UserID 7) or Analyst Team (UserID 8)
+            If selectedUserID.HasValue AndAlso (selectedUserID.Value = 7 OrElse selectedUserID.Value = 8) Then
+                Dim depTypeID As Integer = If(selectedUserID.Value = 7, 1, 2) ' Software Team: DepTypeID = 1, Analyst Team: DepTypeID = 2
+                Dim teamEmails As List(Of String) = GetTeamEmails(depTypeID)
+
+                If teamEmails.Count > 0 Then
+                    For Each email As String In teamEmails
+                        SendTaskAssignmentEmail(taskTitle, taskDescription, email)
+                    Next
+                    MessageBox.Show("Task assigned and emails sent to the team successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Else
-                    MessageBox.Show("Failed to retrieve recipient email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MessageBox.Show("No emails found for the team.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+            Else
+                'Check AssignedTo is NULL or not
+                If Not InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue Then
+                    'AssignedTo was NULL but now task assigned someone
+                    Dim recipientEmail As String = GetUserEmail(selectedUserID.Value)
+                    If Not String.IsNullOrEmpty(recipientEmail) Then
+                        MessageBox.Show("Task assigned successfully!")
+                        SendTaskAssignmentEmail(taskTitle, taskDescription, recipientEmail)
+                    Else
+                        MessageBox.Show("Failed to retrieve recipient email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
+                End If
+
+                'AssignedTo is not NULL, there is a value and this value has changed, send email to new person
+                If InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue AndAlso selectedUserID.Value <> InitialAssignedTo.Value Then
+                    Dim newRecipientEmail As String = GetUserEmail(selectedUserID.Value)
+                    If Not String.IsNullOrEmpty(newRecipientEmail) Then
+                        MessageBox.Show("Task assigned to new person successfully!")
+                        SendTaskAssignmentEmail(taskTitle, taskDescription, newRecipientEmail)
+                    Else
+                        MessageBox.Show("Failed to retrieve recipient email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
                 End If
             End If
 
-            'Second scenario: AssignedTo is not NULL, there is a value and this value has changed, send email to new person
-            If InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue AndAlso selectedUserID.Value <> InitialAssignedTo.Value Then
-                Dim newRecipientEmail As String = GetUserEmail(selectedUserID.Value)
-                If Not String.IsNullOrEmpty(newRecipientEmail) Then
-                    MessageBox.Show("Task assigned to new person successfully!")
-                    SendTaskAssignmentEmail(taskTitle, taskDescription, newRecipientEmail)
-                Else
-                    MessageBox.Show("Failed to retrieve recipient email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                End If
-            End If
-
-            'Lastly, no action or assigned same person again
-            If InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue AndAlso selectedUserID.Value = InitialAssignedTo.Value Then
-                MessageBox.Show("No changes to assignee, closing form.")
-            End If
+            'No action or assigned same person again nothing happening
 
             'In case of assigned person changed
             InitialAssignedTo = selectedUserID
@@ -169,6 +181,29 @@ Public Class TaskDetails1
         End Try
     End Function
 
+    Private Function GetTeamEmails(depTypeID As Integer) As List(Of String)
+        Dim emails As New List(Of String)
+        Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
+        Dim cmd As SqlCommand = New SqlCommand("SELECT Email FROM tblUsers WHERE DepTypeID = @DepTypeID", con)
+        cmd.Parameters.AddWithValue("@DepTypeID", depTypeID)
+
+        Try
+            con.Open()
+            Dim reader As SqlDataReader = cmd.ExecuteReader()
+            While reader.Read()
+                If reader("Email") IsNot DBNull.Value Then
+                    emails.Add(reader("Email").ToString())
+                End If
+            End While
+        Catch ex As Exception
+            MessageBox.Show("Failed to fetch team emails: " & ex.Message)
+        Finally
+            con.Close()
+        End Try
+
+        Return emails
+    End Function
+
     Private Function GetTeamLeadEmail() As String
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
         Dim cmd As SqlCommand = New SqlCommand("SELECT Email FROM tblUsers WHERE RoleID = 2", con) 'RoleID = 2 is for Team Leads
@@ -210,7 +245,7 @@ Public Class TaskDetails1
             mailMessage.To.Add(recipientEmail)
 
             smtpClient.Send(mailMessage)
-            MessageBox.Show("Assigment notification email sent successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            'MessageBox.Show("Assigment notification email sent successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         Catch ex As Exception
             MessageBox.Show("Failed to send email: " & ex.Message)
@@ -244,5 +279,4 @@ Public Class TaskDetails1
             MessageBox.Show("Failed to send email: " & ex.Message)
         End Try
     End Sub
-
 End Class

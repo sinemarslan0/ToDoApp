@@ -6,20 +6,20 @@ Public Class TaskDetails0
     Public Property TaskID As Integer
     Private ReadOnlyMode As Boolean = True 'Declare ReadOnlyMode at the class level
 
-    Private Sub TaskDetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub TaskDetails0Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadTaskDetails(TaskID)
-        btnSave.Enabled = False 'Disable save button initially (nothing to save before editing)
+        btnSave.Enabled = False ' Disable save button initially (nothing to save before editing)
     End Sub
 
     Private Sub LoadTaskDetails(id As Integer)
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted FROM TblTask WHERE TaskID = @TaskID", con)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted, AssignedTo FROM TblTask WHERE TaskID = @TaskID", con)
         cmd.Parameters.AddWithValue("@TaskID", id)
         Dim reader As SqlDataReader
         Try
             con.Open()
             reader = cmd.ExecuteReader()
-            While reader.Read()
+            If reader.Read() Then
                 txtTitle.Text = reader("Title").ToString()
                 txtDescription.Text = reader("Description").ToString()
 
@@ -29,7 +29,7 @@ Public Class TaskDetails0
                     picImage.Image = Image.FromStream(ms)
                     picImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom
                 End If
-            End While
+            End If
         Catch ex As Exception
             MessageBox.Show("An error occurred while loading task details: " & ex.Message)
         Finally

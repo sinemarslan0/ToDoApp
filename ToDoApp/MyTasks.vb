@@ -84,7 +84,6 @@ Public Class MyTasks
     Private Sub btnShow_Click(sender As Object, e As EventArgs) Handles btnShow.Click
         If chkboxTasks.SelectedIndex >= 0 Then
             Dim selectedID As Integer = CType(chkboxTasks.GetItemValue(chkboxTasks.SelectedIndex), Integer)
-            Dim detailsForm As New TaskDetails1()
             TaskDetails1.TaskID = selectedID
             TaskDetails1.Show()
         Else
