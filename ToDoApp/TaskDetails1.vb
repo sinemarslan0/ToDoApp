@@ -3,28 +3,34 @@ Imports System.IO
 Imports System.Net
 Imports System.Net.Mail
 Imports System.Threading
+Imports DevExpress.XtraGrid.Views.Grid
 
 Public Class TaskDetails1
     Public Property TaskID As Integer
     Private InitialIsCompleted As Boolean
     Private InitialAssignedTo As Integer? 'Store the previous assignee ID
+    Private InitialAssignedTeam As Integer?
     Private Sub TaskDetails1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        lblComment.Visible = False
+        MemoEdit1.Visible = False
         'According to RoleID show or hide the Assign part
         If Login.LoggedInRoleID = 1 OrElse Login.LoggedInRoleID = 2 Then
             GridLookUpEdit1.Visible = True
             lblAssign.Visible = True
+            chkDone.Visible = False 'Admin and Team lead assign uncompleted task so no need to see done button
         Else
             GridLookUpEdit1.Visible = False
             lblAssign.Visible = False
+            chkDone.Visible = True
         End If
 
-        LoadUsers()
+        LoadUsersAndTeams()
         LoadTaskDetails(TaskID)
     End Sub
 
     Private Sub LoadTaskDetails(id As Integer)
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted, AssignedTo FROM TblTask WHERE TaskID = @TaskID", con)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted, AssignedToUser, AssignedToTeam FROM TblTask WHERE TaskID = @TaskID", con)
         cmd.Parameters.AddWithValue("@TaskID", id)
         Dim reader As SqlDataReader
         Try
@@ -41,19 +47,21 @@ Public Class TaskDetails1
                     picImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom
                 End If
 
-                'chkEdit (Done button) initiliaze
+                'chkEdit (Done button) initialization
                 InitialIsCompleted = CBool(reader("IsCompleted"))
                 chkDone.Checked = InitialIsCompleted
 
-                'Assign bar initiliaze
-                If reader("AssignedTo") IsNot DBNull.Value Then
-                    Dim assignedUserID As Integer = Convert.ToInt32(reader("AssignedTo"))
-                    GridLookUpEdit1.EditValue = assignedUserID
-                    InitialAssignedTo = assignedUserID 'Store InitialAssignedTo value to check when cliked to Save/Close
+                'Assign bar initialization
+                GridLookUpEdit1.EditValue = Nothing
+                Dim assignedUserID As Object = reader("AssignedToUser")
+                Dim assignedTeamID As Object = reader("AssignedToTeam")
+
+                If Not IsDBNull(assignedUserID) AndAlso assignedUserID IsNot Nothing Then
+                    GridLookUpEdit1.EditValue = "U" & assignedUserID.ToString()
+                ElseIf Not IsDBNull(assignedTeamID) AndAlso assignedTeamID IsNot Nothing Then
+                    GridLookUpEdit1.EditValue = "T" & assignedTeamID.ToString()
                 Else
-                    GridLookUpEdit1.EditValue = Nothing
-                    InitialAssignedTo = Nothing 'If AssignedTo is NULL, InitialAssignedTo is NULL
-                    GridLookUpEdit1.Properties.NullText = "Select a person"
+                    GridLookUpEdit1.Properties.NullText = "Select a person or team"
                 End If
             End If
         Catch ex As Exception
@@ -63,100 +71,175 @@ Public Class TaskDetails1
         End Try
     End Sub
 
-    Private Sub LoadUsers()
+    Private Sub LoadUsersAndTeams()
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT UserID, Username FROM tblUsers", con)
-        Dim adapter As New SqlDataAdapter(cmd)
-        Dim users As New DataTable()
+        Dim usersCmd As SqlCommand = New SqlCommand("SELECT UserID, Username FROM tblUsers WHERE UserID > @MinUserID", con)
+        usersCmd.Parameters.AddWithValue("@MinUserID", 1)
+        Dim usersAdapter As New SqlDataAdapter(usersCmd)
+        Dim usersTable As New DataTable()
+
+        Dim teamsCmd As SqlCommand = New SqlCommand("SELECT TeamID, TeamName FROM tblTeams", con)
+        Dim teamsAdapter As New SqlDataAdapter(teamsCmd)
+        Dim teamsTable As New DataTable()
+
+        Dim combinedTable As New DataTable()
+        combinedTable.Columns.Add("ID", GetType(String))
+        combinedTable.Columns.Add("Name", GetType(String))
+        combinedTable.Columns.Add("Type", GetType(String))
 
         Try
             con.Open()
-            adapter.Fill(users)
-            'Bind users to the GridLookUpEdit
-            GridLookUpEdit1.Properties.DataSource = users
-            GridLookUpEdit1.Properties.DisplayMember = "Username" ' Display Username
-            GridLookUpEdit1.Properties.ValueMember = "UserID"  ' Store UserID
+
+            'Fill users data
+            usersAdapter.Fill(usersTable)
+            For Each row As DataRow In usersTable.Rows
+                combinedTable.Rows.Add("U" & row("UserID").ToString(), row("Username"), "User")
+            Next
+
+            'Fill teams data
+            teamsAdapter.Fill(teamsTable)
+            For Each row As DataRow In teamsTable.Rows
+                combinedTable.Rows.Add("T" & row("TeamID").ToString(), row("TeamName"), "Team")
+            Next
+
+            'Bind to GridLookUpEdit
+            GridLookUpEdit1.Properties.DataSource = combinedTable
+            GridLookUpEdit1.Properties.DisplayMember = "Name"
+            GridLookUpEdit1.Properties.ValueMember = "ID"
+            GridLookUpEdit1.Properties.PopulateViewColumns()
+
+            Dim view As GridView = GridLookUpEdit1.Properties.View
+            view.Columns("ID").Visible = False
+            view.Columns("Name").Caption = "Name"
+            view.Columns("Type").Visible = False
+            view.BestFitColumns()
+
         Catch ex As Exception
-            MessageBox.Show("An error occurred while loading users: " & ex.Message)
+            MessageBox.Show("An error occurred while loading users and teams: " & ex.Message)
         Finally
             con.Close()
         End Try
     End Sub
+
+    Private Sub GridLookUpEdit1_EditValueChanged(sender As Object, e As EventArgs) Handles GridLookUpEdit1.EditValueChanged
+        Dim selectedValue As Object = GridLookUpEdit1.EditValue
+        Dim selectedRow As DataRow = CType(GridLookUpEdit1.Properties.View.GetFocusedDataRow(), DataRow)
+        If selectedRow IsNot Nothing Then
+            Dim selectedType As String = If(selectedRow("Type") IsNot DBNull.Value, selectedRow("Type").ToString(), String.Empty)
+            If selectedType = "User" Then
+                Dim userId As Integer
+                If Integer.TryParse(selectedRow("ID").ToString(), userId) Then
+                    MessageBox.Show("Selected User ID: " & userId)
+                End If
+            ElseIf selectedType = "Team" Then
+                Dim teamId As Integer
+                If Integer.TryParse(selectedRow("ID").ToString(), teamId) Then
+                    MessageBox.Show("Selected Team ID: " & teamId)
+                End If
+            End If
+        End If
+    End Sub
+
+
+
     Private Sub btnSaveClose_Click(sender As Object, e As EventArgs) Handles btnSaveClose.Click
         Dim taskTitle As String = txtTitle.Text
         Dim taskDescription As String = txtDescription.Text
         Dim isCompleted As Boolean = chkDone.Checked
-        Dim selectedUserID As Integer? = CType(GridLookUpEdit1.EditValue, Integer?) ' Get the selected UserID
+        Dim comment As String = MemoEdit1.Text
 
-        'SQL Connection
+        'Retrieve the selected value from GridLookUpEdit
+        Dim selectedValue As String = TryCast(GridLookUpEdit1.EditValue, String)
+        Dim assignedToUser As Object = DBNull.Value
+        Dim assignedToTeam As Object = DBNull.Value
+        Dim currentAssignedToUser As Object = DBNull.Value
+        Dim currentAssignedToTeam As Object = DBNull.Value
+
+        If Not String.IsNullOrEmpty(selectedValue) Then
+            Dim prefix As String = selectedValue.Substring(0, 1)
+            Dim id As Integer = Convert.ToInt32(selectedValue.Substring(1))
+
+            If prefix = "U" Then
+                assignedToUser = id
+            ElseIf prefix = "T" Then
+                assignedToTeam = id
+            End If
+        End If
+
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedTo = @AssignedTo WHERE TaskID = @TaskID", con)
-        cmd.Parameters.AddWithValue("@TaskID", TaskID)
-        cmd.Parameters.AddWithValue("@IsCompleted", chkDone.Checked)
-        cmd.Parameters.AddWithValue("@AssignedTo", If(selectedUserID.HasValue, CType(selectedUserID, Object), DBNull.Value)) ' Save selected UserID or DBNull
+
+        ' Fetch current assignment from the database
+        Dim fetchCmd As SqlCommand = New SqlCommand("SELECT AssignedToUser, AssignedToTeam FROM TblTask WHERE TaskID = @TaskID", con)
+        fetchCmd.Parameters.AddWithValue("@TaskID", TaskID)
 
         Try
             con.Open()
-            cmd.ExecuteNonQuery()
+            Using reader As SqlDataReader = fetchCmd.ExecuteReader()
+                If reader.Read() Then
+                    currentAssignedToUser = reader("AssignedToUser")
+                    currentAssignedToTeam = reader("AssignedToTeam")
+                End If
+            End Using
 
-            'Check if the task is assigned to Software Team (UserID 7) or Analyst Team (UserID 8)
-            If selectedUserID.HasValue AndAlso (selectedUserID.Value = 7 OrElse selectedUserID.Value = 8) Then
-                Dim depTypeID As Integer = If(selectedUserID.Value = 7, 1, 2) ' Software Team: DepTypeID = 1, Analyst Team: DepTypeID = 2
-                Dim teamEmails As List(Of String) = GetTeamEmails(depTypeID)
+            'Determine if the assignment has changed
+            Dim assignmentChanged As Boolean = (Not Object.Equals(currentAssignedToUser, assignedToUser)) OrElse (Not Object.Equals(currentAssignedToTeam, assignedToTeam))
 
-                If teamEmails.Count > 0 Then
+            'Update task details
+            Dim updateCmd As SqlCommand
+            If isCompleted Then
+                updateCmd = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedToUser = @AssignedToUser, AssignedToTeam = @AssignedToTeam, Comment = @Comment, CompletedTime = @CompletedTime WHERE TaskID = @TaskID", con)
+                updateCmd.Parameters.AddWithValue("@CompletedTime", DateTime.Now)
+            Else
+                updateCmd = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedToUser = @AssignedToUser, AssignedToTeam = @AssignedToTeam, Comment = @Comment WHERE TaskID = @TaskID", con)
+            End If
+
+            updateCmd.Parameters.AddWithValue("@IsCompleted", isCompleted)
+            updateCmd.Parameters.AddWithValue("@AssignedToUser", assignedToUser)
+            updateCmd.Parameters.AddWithValue("@AssignedToTeam", assignedToTeam)
+            updateCmd.Parameters.AddWithValue("@Comment", comment)
+            updateCmd.Parameters.AddWithValue("@TaskID", TaskID)
+
+            updateCmd.ExecuteNonQuery()
+
+            'Send notification emails if the assignment changed
+            If assignmentChanged Then
+                If assignedToUser IsNot DBNull.Value Then
+                    Dim recipientEmail As String = GetUserEmail(assignedToUser)
+                    If Not String.IsNullOrEmpty(recipientEmail) Then
+                        SendTaskAssignmentEmail(taskTitle, taskDescription, recipientEmail)
+                        MessageBox.Show("Task assigned and email sent to the person successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                ElseIf assignedToTeam IsNot DBNull.Value Then
+                    Dim teamEmails As List(Of String) = GetTeamEmailsByTeamID(assignedToTeam)
                     For Each email As String In teamEmails
                         SendTaskAssignmentEmail(taskTitle, taskDescription, email)
+                        MessageBox.Show("Task assigned and emails sent to the team successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Next
-                    MessageBox.Show("Task assigned and emails sent to the team successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                Else
-                    MessageBox.Show("No emails found for the team.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End If
-            Else
-                'Check AssignedTo is NULL or not
-                If Not InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue Then
-                    'AssignedTo was NULL but now task assigned someone
-                    Dim recipientEmail As String = GetUserEmail(selectedUserID.Value)
-                    If Not String.IsNullOrEmpty(recipientEmail) Then
-                        MessageBox.Show("Task assigned successfully!")
-                        SendTaskAssignmentEmail(taskTitle, taskDescription, recipientEmail)
-                    Else
-                        MessageBox.Show("Failed to retrieve recipient email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    End If
-                End If
-
-                'AssignedTo is not NULL, there is a value and this value has changed, send email to new person
-                If InitialAssignedTo.HasValue AndAlso selectedUserID.HasValue AndAlso selectedUserID.Value <> InitialAssignedTo.Value Then
-                    Dim newRecipientEmail As String = GetUserEmail(selectedUserID.Value)
-                    If Not String.IsNullOrEmpty(newRecipientEmail) Then
-                        MessageBox.Show("Task assigned to new person successfully!")
-                        SendTaskAssignmentEmail(taskTitle, taskDescription, newRecipientEmail)
-                    Else
-                        MessageBox.Show("Failed to retrieve recipient email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    End If
                 End If
             End If
 
-            'No action or assigned same person again nothing happening
-
-            'In case of assigned person changed
-            InitialAssignedTo = selectedUserID
-
             'If responsible person of the task checked the Done button
-            If chkDone.Checked AndAlso Not InitialIsCompleted Then
+            If chkDone.Checked Then
+                ' Notify the team lead
                 Dim teamLeadEmail As String = GetTeamLeadEmail()
                 If Not String.IsNullOrEmpty(teamLeadEmail) Then
-                    SendTaskCompletedEmail(TaskID, taskTitle, taskDescription, teamLeadEmail)
+                    SendTaskCompletedEmail(TaskID, taskTitle, taskDescription, comment, teamLeadEmail)
                 Else
                     MessageBox.Show("Failed to retrieve team lead email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
 
         Catch ex As Exception
-            MessageBox.Show("An error occurred while updating task: " & ex.Message)
+            MessageBox.Show("An error occurred while updating the task: " & ex.Message)
         Finally
             con.Close()
         End Try
+
+        'Notify MyTasks to refresh
+        Dim myTasksForm As MyTasks = Application.OpenForms.OfType(Of MyTasks)().FirstOrDefault()
+        If myTasksForm IsNot Nothing Then
+            myTasksForm.RefreshTasks()
+        End If
 
         Me.Close()
     End Sub
@@ -181,28 +264,29 @@ Public Class TaskDetails1
         End Try
     End Function
 
-    Private Function GetTeamEmails(depTypeID As Integer) As List(Of String)
-        Dim emails As New List(Of String)
+    Private Function GetTeamEmailsByTeamID(teamID As Integer) As List(Of String)
+        Dim emails As New List(Of String)()
+
+        'SQL connection and command to fetch emails of users belonging to the specified TeamID
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT Email FROM tblUsers WHERE DepTypeID = @DepTypeID", con)
-        cmd.Parameters.AddWithValue("@DepTypeID", depTypeID)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT Email FROM tblUsers WHERE TeamID = @TeamID", con)
+        cmd.Parameters.AddWithValue("@TeamID", teamID)
 
         Try
             con.Open()
             Dim reader As SqlDataReader = cmd.ExecuteReader()
             While reader.Read()
-                If reader("Email") IsNot DBNull.Value Then
-                    emails.Add(reader("Email").ToString())
-                End If
+                emails.Add(reader("Email").ToString())
             End While
         Catch ex As Exception
-            MessageBox.Show("Failed to fetch team emails: " & ex.Message)
+            MessageBox.Show("An error occurred while retrieving team emails: " & ex.Message)
         Finally
             con.Close()
         End Try
 
         Return emails
     End Function
+
 
     Private Function GetTeamLeadEmail() As String
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
@@ -251,7 +335,7 @@ Public Class TaskDetails1
             MessageBox.Show("Failed to send email: " & ex.Message)
         End Try
     End Sub
-    Private Sub SendTaskCompletedEmail(ByVal taskID As Integer, ByVal taskTitle As String, ByVal taskDescription As String, ByVal teamLeadEmail As String)
+    Private Sub SendTaskCompletedEmail(ByVal taskID As Integer, ByVal taskTitle As String, ByVal taskDescription As String, ByVal taskComment As String, ByVal teamLeadEmail As String)
         Try
             Dim smtpClient As New SmtpClient("smtp.gmail.com") With {
                 .Port = 587,
@@ -266,6 +350,7 @@ Public Class TaskDetails1
                     $"Task ID: {taskID}{Environment.NewLine}" &
                     $"Title: {taskTitle}{Environment.NewLine}" &
                     $"Description: {taskDescription}{Environment.NewLine}{Environment.NewLine}" &
+                    $"Comment: {taskComment}{Environment.NewLine}{Environment.NewLine}" &
                     $"Please review the task completion and update any relevant records.{Environment.NewLine}",
             .IsBodyHtml = False
         }
@@ -278,5 +363,17 @@ Public Class TaskDetails1
         Catch ex As Exception
             MessageBox.Show("Failed to send email: " & ex.Message)
         End Try
+    End Sub
+
+    Private Sub chkDone_CheckedChanged(sender As Object, e As EventArgs) Handles chkDone.CheckedChanged
+        If chkDone.Checked Then
+            lblComment.Visible = True ' Label for the comment field
+            MemoEdit1.Visible = True ' Make the comment field visible
+            MessageBox.Show("Please provide a comment before saving the task.", "Task Completed", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            lblComment.Visible = False
+            MemoEdit1.Visible = False
+            MemoEdit1.Text = String.Empty ' Clear the comment field if task is not completed
+        End If
     End Sub
 End Class

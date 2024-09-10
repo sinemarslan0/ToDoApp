@@ -36,8 +36,9 @@ Public Class AddingTask
             'Notify other forms that a task has been added
             RaiseEvent TaskAdded()
 
+            Dim teamLeadEmail As String = GetTeamLeadEmail()
             'Sending email after the task is successfully added
-            SendEmailNotification(txtTitle.Text, txtDescription.Text)
+            SendEmailNotification(txtTitle.Text, txtDescription.Text, teamLeadEmail)
 
         Catch ex As Exception
             MessageBox.Show("An error occurred: " & ex.Message)
@@ -48,7 +49,26 @@ Public Class AddingTask
         Me.Close()
     End Sub
 
-    Private Sub SendEmailNotification(ByVal taskTitle As String, ByVal taskDescription As String)
+    Private Function GetTeamLeadEmail() As String
+        Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
+        Dim cmd As SqlCommand = New SqlCommand("SELECT Email FROM tblUsers WHERE RoleID = 2", con) 'RoleID = 2 is for Team Leads
+
+        Try
+            con.Open()
+            Dim teamLeadEmail As Object = cmd.ExecuteScalar()
+            If teamLeadEmail IsNot Nothing Then
+                Return teamLeadEmail.ToString()
+            Else
+                Return String.Empty
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Failed to fetch team lead email: " & ex.Message)
+            Return String.Empty
+        Finally
+            con.Close()
+        End Try
+    End Function
+    Private Sub SendEmailNotification(ByVal taskTitle As String, ByVal taskDescription As String, ByVal teamLeadEmail As String)
         Try
             Dim smtpClient As New SmtpClient("smtp.gmail.com") With {
                 .Port = 587,
@@ -58,12 +78,12 @@ Public Class AddingTask
 
             Dim mailMessage As New MailMessage() With {
                 .From = New MailAddress("rsln.snm@gmail.com"),
-                .Subject = "New Task Added",
-                .Body = $"A new task has been added: {taskTitle}{Environment.NewLine}Description: {taskDescription}",
+                .Subject = "New Task Added by Company",
+                .Body = $"A new task has been added by Company: {taskTitle}{Environment.NewLine}Description: {taskDescription}",
                 .IsBodyHtml = False
             }
 
-            mailMessage.To.Add("sinemarslan089@gmail.com")
+            mailMessage.To.Add(teamLeadEmail)
 
             smtpClient.Send(mailMessage)
             MessageBox.Show("Notification email sent successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)

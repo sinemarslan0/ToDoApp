@@ -31,22 +31,22 @@ Public Class ToDo
         adapter.Fill(tasks)
         bindingSource.DataSource = tasks
 
-        ' Store task states
+        'Store task states
         originalTaskStates.Clear()
         For Each row As DataRow In tasks.Rows
-            ' Conversion of the IsCompleted field to Boolean
+            'Conversion of the IsCompleted field to Boolean
             Dim isCompleted As Boolean = Convert.ToBoolean(row("IsCompleted"))
             originalTaskStates(row.Field(Of Integer)("TaskID")) = isCompleted
         Next
 
-        ' Initialize item check states after loading tasks
+        'Initialize item check states after loading tasks
         InitializeCheckedStates()
     End Sub
 
     Private Sub InitializeCheckedStates()
         For i As Integer = 0 To chkboxTasks.ItemCount - 1
             Dim itemID As Integer = CType(chkboxTasks.GetItemValue(i), Integer)
-            ' Ensure that the original state is fetched properly and then set the checked state
+            'Ensure that the original state is fetched properly and then set the checked state
             If originalTaskStates.ContainsKey(itemID) Then
                 Dim isChecked As Boolean = originalTaskStates(itemID)
                 chkboxTasks.SetItemChecked(i, isChecked)

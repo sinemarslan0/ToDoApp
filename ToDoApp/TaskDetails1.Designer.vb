@@ -31,12 +31,15 @@ Partial Class TaskDetails1
         Me.lblAssign = New DevExpress.XtraEditors.LabelControl()
         Me.GridLookUpEdit1 = New DevExpress.XtraEditors.GridLookUpEdit()
         Me.GridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.MemoEdit1 = New DevExpress.XtraEditors.MemoEdit()
+        Me.lblComment = New DevExpress.XtraEditors.LabelControl()
         CType(Me.chkDone.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtTitle.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridLookUpEdit1.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridLookUpEdit1View, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MemoEdit1.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnSaveClose
@@ -45,7 +48,7 @@ Partial Class TaskDetails1
         Me.btnSaveClose.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
         Me.btnSaveClose.Appearance.Options.UseBackColor = True
         Me.btnSaveClose.Appearance.Options.UseFont = True
-        Me.btnSaveClose.Location = New System.Drawing.Point(336, 511)
+        Me.btnSaveClose.Location = New System.Drawing.Point(346, 644)
         Me.btnSaveClose.Name = "btnSaveClose"
         Me.btnSaveClose.Size = New System.Drawing.Size(111, 29)
         Me.btnSaveClose.TabIndex = 17
@@ -53,7 +56,7 @@ Partial Class TaskDetails1
         '
         'chkDone
         '
-        Me.chkDone.Location = New System.Drawing.Point(80, 512)
+        Me.chkDone.Location = New System.Drawing.Point(77, 502)
         Me.chkDone.Name = "chkDone"
         Me.chkDone.Properties.Appearance.Font = New System.Drawing.Font("Tahoma", 10.0!)
         Me.chkDone.Properties.Appearance.Options.UseFont = True
@@ -120,7 +123,7 @@ Partial Class TaskDetails1
         '
         Me.lblAssign.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!)
         Me.lblAssign.Appearance.Options.UseFont = True
-        Me.lblAssign.Location = New System.Drawing.Point(80, 442)
+        Me.lblAssign.Location = New System.Drawing.Point(77, 454)
         Me.lblAssign.Name = "lblAssign"
         Me.lblAssign.Size = New System.Drawing.Size(64, 24)
         Me.lblAssign.TabIndex = 19
@@ -128,7 +131,7 @@ Partial Class TaskDetails1
         '
         'GridLookUpEdit1
         '
-        Me.GridLookUpEdit1.Location = New System.Drawing.Point(80, 472)
+        Me.GridLookUpEdit1.Location = New System.Drawing.Point(77, 484)
         Me.GridLookUpEdit1.Name = "GridLookUpEdit1"
         Me.GridLookUpEdit1.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.GridLookUpEdit1.Properties.PopupView = Me.GridLookUpEdit1View
@@ -142,11 +145,30 @@ Partial Class TaskDetails1
         Me.GridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = False
         Me.GridLookUpEdit1View.OptionsView.ShowGroupPanel = False
         '
+        'MemoEdit1
+        '
+        Me.MemoEdit1.Location = New System.Drawing.Point(80, 557)
+        Me.MemoEdit1.Name = "MemoEdit1"
+        Me.MemoEdit1.Size = New System.Drawing.Size(320, 71)
+        Me.MemoEdit1.TabIndex = 21
+        '
+        'lblComment
+        '
+        Me.lblComment.Appearance.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.lblComment.Appearance.Options.UseFont = True
+        Me.lblComment.Location = New System.Drawing.Point(80, 533)
+        Me.lblComment.Name = "lblComment"
+        Me.lblComment.Size = New System.Drawing.Size(69, 18)
+        Me.lblComment.TabIndex = 22
+        Me.lblComment.Text = "Comment:"
+        '
         'TaskDetails1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(498, 610)
+        Me.ClientSize = New System.Drawing.Size(498, 710)
+        Me.Controls.Add(Me.lblComment)
+        Me.Controls.Add(Me.MemoEdit1)
         Me.Controls.Add(Me.GridLookUpEdit1)
         Me.Controls.Add(Me.lblAssign)
         Me.Controls.Add(Me.btnSaveClose)
@@ -166,6 +188,7 @@ Partial Class TaskDetails1
         CType(Me.txtTitle.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridLookUpEdit1.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridLookUpEdit1View, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MemoEdit1.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -182,4 +205,6 @@ Partial Class TaskDetails1
     Friend WithEvents lblAssign As DevExpress.XtraEditors.LabelControl
     Friend WithEvents GridLookUpEdit1 As DevExpress.XtraEditors.GridLookUpEdit
     Friend WithEvents GridLookUpEdit1View As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents MemoEdit1 As DevExpress.XtraEditors.MemoEdit
+    Friend WithEvents lblComment As DevExpress.XtraEditors.LabelControl
 End Class
