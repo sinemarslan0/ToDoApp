@@ -13,7 +13,7 @@ Public Class TaskDetails0
 
     Private Sub LoadTaskDetails(id As Integer)
         Dim con As SqlConnection = New SqlConnection("Data Source=SINEM\SQLEXPRESS;Initial Catalog=DbToDo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
-        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted, AssignedTo FROM TblTask WHERE TaskID = @TaskID", con)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT TaskID, Title, Description, Photograph, IsCompleted FROM TblTask WHERE TaskID = @TaskID", con)
         cmd.Parameters.AddWithValue("@TaskID", id)
         Dim reader As SqlDataReader
         Try

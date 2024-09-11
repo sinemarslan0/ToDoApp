@@ -149,6 +149,12 @@
     <Compile Include="TaskDetails1.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TaskImageViewer.Designer.vb">
+      <DependentUpon>TaskImageViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TaskImageViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TblTasks.vb">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -193,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TaskDetails1.resx">
       <DependentUpon>TaskDetails1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TaskImageViewer.resx">
+      <DependentUpon>TaskImageViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToDo.resx">
       <DependentUpon>ToDo.vb</DependentUpon>

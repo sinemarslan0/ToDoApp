@@ -369,11 +369,25 @@ Public Class TaskDetails1
         If chkDone.Checked Then
             lblComment.Visible = True ' Label for the comment field
             MemoEdit1.Visible = True ' Make the comment field visible
-            MessageBox.Show("Please provide a comment before saving the task.", "Task Completed", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
             lblComment.Visible = False
             MemoEdit1.Visible = False
             MemoEdit1.Text = String.Empty ' Clear the comment field if task is not completed
+        End If
+    End Sub
+
+    Private Sub btnZoom_Click(sender As Object, e As EventArgs) Handles btnZoom.Click
+        ' Check if there's an image loaded
+        If picImage.Image IsNot Nothing Then
+            ' Create a new instance of TaskImageViewer
+            Dim imageViewer As New TaskImageViewer()
+
+            ' Pass the image to TaskImageViewer
+            imageViewer.picEnlargedImage.Image = picImage.Image
+
+            imageViewer.Show()
+        Else
+            MessageBox.Show("No image to display.")
         End If
     End Sub
 End Class

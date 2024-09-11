@@ -60,7 +60,7 @@ Public Class ToDo
         'Apply search filter
         bindingSource.Filter = $"Title LIKE '%{searchText}%'"
 
-        ' Reinitialize checked states after filtering
+        'Reinitialize checked states after filtering
         InitializeCheckedStates()
     End Sub
 

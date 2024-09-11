@@ -33,6 +33,7 @@ Partial Class TaskDetails1
         Me.GridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.MemoEdit1 = New DevExpress.XtraEditors.MemoEdit()
         Me.lblComment = New DevExpress.XtraEditors.LabelControl()
+        Me.btnZoom = New DevExpress.XtraEditors.SimpleButton()
         CType(Me.chkDone.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -162,11 +163,23 @@ Partial Class TaskDetails1
         Me.lblComment.TabIndex = 22
         Me.lblComment.Text = "Comment:"
         '
+        'btnZoom
+        '
+        Me.btnZoom.ImageOptions.Image = CType(resources.GetObject("btnZoom.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnZoom.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.TopCenter
+        Me.btnZoom.Location = New System.Drawing.Point(342, 279)
+        Me.btnZoom.Name = "btnZoom"
+        Me.btnZoom.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
+        Me.btnZoom.Size = New System.Drawing.Size(42, 65)
+        Me.btnZoom.TabIndex = 23
+        Me.btnZoom.Text = "Zoom"
+        '
         'TaskDetails1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(498, 710)
+        Me.Controls.Add(Me.btnZoom)
         Me.Controls.Add(Me.lblComment)
         Me.Controls.Add(Me.MemoEdit1)
         Me.Controls.Add(Me.GridLookUpEdit1)
@@ -181,7 +194,7 @@ Partial Class TaskDetails1
         Me.Controls.Add(Me.lblTitle)
         Me.IconOptions.LargeImage = CType(resources.GetObject("TaskDetails1.IconOptions.LargeImage"), System.Drawing.Image)
         Me.Name = "TaskDetails1"
-        Me.Text = "TaskDetails"
+        Me.Text = "Task Details"
         CType(Me.chkDone.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).EndInit()
@@ -207,4 +220,5 @@ Partial Class TaskDetails1
     Friend WithEvents GridLookUpEdit1View As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents MemoEdit1 As DevExpress.XtraEditors.MemoEdit
     Friend WithEvents lblComment As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents btnZoom As DevExpress.XtraEditors.SimpleButton
 End Class
