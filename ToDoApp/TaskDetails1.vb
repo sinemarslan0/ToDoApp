@@ -11,8 +11,6 @@ Public Class TaskDetails1
     Private InitialAssignedTo As Integer? 'Store the previous assignee ID
     Private InitialAssignedTeam As Integer?
     Private Sub TaskDetails1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        lblComment.Visible = False
-        MemoEdit1.Visible = False
         'According to RoleID show or hide the Assign part
         If Login.LoggedInRoleID = 1 OrElse Login.LoggedInRoleID = 2 Then
             GridLookUpEdit1.Visible = True
@@ -140,13 +138,10 @@ Public Class TaskDetails1
         End If
     End Sub
 
-
-
     Private Sub btnSaveClose_Click(sender As Object, e As EventArgs) Handles btnSaveClose.Click
         Dim taskTitle As String = txtTitle.Text
         Dim taskDescription As String = txtDescription.Text
         Dim isCompleted As Boolean = chkDone.Checked
-        Dim comment As String = MemoEdit1.Text
 
         'Retrieve the selected value from GridLookUpEdit
         Dim selectedValue As String = TryCast(GridLookUpEdit1.EditValue, String)
@@ -187,16 +182,15 @@ Public Class TaskDetails1
             'Update task details
             Dim updateCmd As SqlCommand
             If isCompleted Then
-                updateCmd = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedToUser = @AssignedToUser, AssignedToTeam = @AssignedToTeam, Comment = @Comment, CompletedTime = @CompletedTime WHERE TaskID = @TaskID", con)
+                updateCmd = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedToUser = @AssignedToUser, AssignedToTeam = @AssignedToTeam, CompletedTime = @CompletedTime WHERE TaskID = @TaskID", con)
                 updateCmd.Parameters.AddWithValue("@CompletedTime", DateTime.Now)
             Else
-                updateCmd = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedToUser = @AssignedToUser, AssignedToTeam = @AssignedToTeam, Comment = @Comment WHERE TaskID = @TaskID", con)
+                updateCmd = New SqlCommand("UPDATE TblTask SET IsCompleted = @IsCompleted, AssignedToUser = @AssignedToUser, AssignedToTeam = @AssignedToTeam, WHERE TaskID = @TaskID", con)
             End If
 
             updateCmd.Parameters.AddWithValue("@IsCompleted", isCompleted)
             updateCmd.Parameters.AddWithValue("@AssignedToUser", assignedToUser)
             updateCmd.Parameters.AddWithValue("@AssignedToTeam", assignedToTeam)
-            updateCmd.Parameters.AddWithValue("@Comment", comment)
             updateCmd.Parameters.AddWithValue("@TaskID", TaskID)
 
             updateCmd.ExecuteNonQuery()
@@ -223,7 +217,7 @@ Public Class TaskDetails1
                 ' Notify the team lead
                 Dim teamLeadEmail As String = GetTeamLeadEmail()
                 If Not String.IsNullOrEmpty(teamLeadEmail) Then
-                    SendTaskCompletedEmail(TaskID, taskTitle, taskDescription, comment, teamLeadEmail)
+                    SendTaskCompletedEmail(TaskID, taskTitle, taskDescription, teamLeadEmail)
                 Else
                     MessageBox.Show("Failed to retrieve team lead email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
@@ -335,7 +329,7 @@ Public Class TaskDetails1
             MessageBox.Show("Failed to send email: " & ex.Message)
         End Try
     End Sub
-    Private Sub SendTaskCompletedEmail(ByVal taskID As Integer, ByVal taskTitle As String, ByVal taskDescription As String, ByVal taskComment As String, ByVal teamLeadEmail As String)
+    Private Sub SendTaskCompletedEmail(ByVal taskID As Integer, ByVal taskTitle As String, ByVal taskDescription As String, ByVal teamLeadEmail As String)
         Try
             Dim smtpClient As New SmtpClient("smtp.gmail.com") With {
                 .Port = 587,
@@ -350,7 +344,6 @@ Public Class TaskDetails1
                     $"Task ID: {taskID}{Environment.NewLine}" &
                     $"Title: {taskTitle}{Environment.NewLine}" &
                     $"Description: {taskDescription}{Environment.NewLine}{Environment.NewLine}" &
-                    $"Comment: {taskComment}{Environment.NewLine}{Environment.NewLine}" &
                     $"Please review the task completion and update any relevant records.{Environment.NewLine}",
             .IsBodyHtml = False
         }
@@ -363,17 +356,6 @@ Public Class TaskDetails1
         Catch ex As Exception
             MessageBox.Show("Failed to send email: " & ex.Message)
         End Try
-    End Sub
-
-    Private Sub chkDone_CheckedChanged(sender As Object, e As EventArgs) Handles chkDone.CheckedChanged
-        If chkDone.Checked Then
-            lblComment.Visible = True ' Label for the comment field
-            MemoEdit1.Visible = True ' Make the comment field visible
-        Else
-            lblComment.Visible = False
-            MemoEdit1.Visible = False
-            MemoEdit1.Text = String.Empty ' Clear the comment field if task is not completed
-        End If
     End Sub
 
     Private Sub btnZoom_Click(sender As Object, e As EventArgs) Handles btnZoom.Click
@@ -389,5 +371,12 @@ Public Class TaskDetails1
         Else
             MessageBox.Show("No image to display.")
         End If
+    End Sub
+
+    Private Sub btnOpenChat_Click(sender As Object, e As EventArgs) Handles btnOpenChat.Click
+        Dim chatForm As New Chat()
+        chatForm.TaskID = Me.TaskID 'Send taskID for database
+        chatForm.LoggedInUserID = Login.LoggedInUserID 'Send LoggedInUserID for datase
+        chatForm.Show()
     End Sub
 End Class

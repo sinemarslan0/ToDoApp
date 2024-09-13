@@ -44,8 +44,8 @@ Public Class MyTasks
 
         'Create the command and set the parameter for UserID
         Dim cmd As SqlCommand = New SqlCommand(query, con)
-        If Login.LoggedInRoleID > 2 Then  ' Only pass the UserID if the user is not a company user, Admin, or Team Lead
-            cmd.Parameters.AddWithValue("@UserID", Login.LoggedInUserID)  ' Assuming you're storing the logged-in user's ID
+        If Login.LoggedInRoleID > 2 Then  'Only pass the UserID if the user is not a company user, Admin, or Team Lead
+            cmd.Parameters.AddWithValue("@UserID", Login.LoggedInUserID)
         End If
 
         'Execute and fill the DataTable
@@ -88,6 +88,7 @@ Public Class MyTasks
         If chkboxTasks.SelectedIndex >= 0 Then
             Dim selectedID As Integer = CType(chkboxTasks.GetItemValue(chkboxTasks.SelectedIndex), Integer)
             TaskDetails1.TaskID = selectedID
+            Chat.TaskID = selectedID
             TaskDetails1.Show()
         Else
             MessageBox.Show("Please select a task to view details.", "No Selection")
