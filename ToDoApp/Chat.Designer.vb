@@ -104,11 +104,11 @@ Partial Class Chat
         '
         'lblTitle
         '
-        Me.lblTitle.Appearance.Font = New System.Drawing.Font("Tahoma", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.lblTitle.Appearance.Font = New System.Drawing.Font("Tahoma", 14.0!, System.Drawing.FontStyle.Bold)
         Me.lblTitle.Appearance.Options.UseFont = True
         Me.lblTitle.Location = New System.Drawing.Point(59, 12)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(46, 24)
+        Me.lblTitle.Size = New System.Drawing.Size(54, 28)
         Me.lblTitle.TabIndex = 3
         Me.lblTitle.Text = "Chat"
         '

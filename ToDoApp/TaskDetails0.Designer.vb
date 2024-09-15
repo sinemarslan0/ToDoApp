@@ -28,6 +28,7 @@ Partial Class TaskDetails0
         Me.picImage = New DevExpress.XtraEditors.PictureEdit()
         Me.txtDescription = New DevExpress.XtraEditors.MemoEdit()
         Me.txtTitle = New DevExpress.XtraEditors.TextEdit()
+        Me.btnOpenChat = New DevExpress.XtraEditors.SimpleButton()
         CType(Me.picImage.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDescription.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtTitle.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -67,11 +68,12 @@ Partial Class TaskDetails0
         '
         Me.btnEdit.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
         Me.btnEdit.Appearance.Options.UseFont = True
+        Me.btnEdit.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter
         Me.btnEdit.ImageOptions.SvgImage = CType(resources.GetObject("btnEdit.ImageOptions.SvgImage"), DevExpress.Utils.Svg.SvgImage)
-        Me.btnEdit.Location = New System.Drawing.Point(328, 12)
+        Me.btnEdit.Location = New System.Drawing.Point(372, 0)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
-        Me.btnEdit.Size = New System.Drawing.Size(97, 51)
+        Me.btnEdit.Size = New System.Drawing.Size(55, 64)
         Me.btnEdit.TabIndex = 6
         Me.btnEdit.Text = "Edit"
         '
@@ -80,10 +82,11 @@ Partial Class TaskDetails0
         Me.btnSave.Appearance.Font = New System.Drawing.Font("Tahoma", 8.5!)
         Me.btnSave.Appearance.Options.UseFont = True
         Me.btnSave.ImageOptions.Image = CType(resources.GetObject("btnSave.ImageOptions.Image"), System.Drawing.Image)
-        Me.btnSave.Location = New System.Drawing.Point(344, 500)
+        Me.btnSave.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter
+        Me.btnSave.Location = New System.Drawing.Point(381, 516)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
-        Me.btnSave.Size = New System.Drawing.Size(81, 42)
+        Me.btnSave.Size = New System.Drawing.Size(55, 69)
         Me.btnSave.TabIndex = 8
         Me.btnSave.Text = "Save"
         '
@@ -112,11 +115,23 @@ Partial Class TaskDetails0
         Me.txtTitle.Size = New System.Drawing.Size(299, 22)
         Me.txtTitle.TabIndex = 3
         '
+        'btnOpenChat
+        '
+        Me.btnOpenChat.ImageOptions.Image = CType(resources.GetObject("btnOpenChat.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnOpenChat.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter
+        Me.btnOpenChat.Location = New System.Drawing.Point(68, 524)
+        Me.btnOpenChat.Name = "btnOpenChat"
+        Me.btnOpenChat.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
+        Me.btnOpenChat.Size = New System.Drawing.Size(107, 55)
+        Me.btnOpenChat.TabIndex = 9
+        Me.btnOpenChat.Text = "Open Task Chat"
+        '
         'TaskDetails0
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(448, 560)
+        Me.ClientSize = New System.Drawing.Size(448, 610)
+        Me.Controls.Add(Me.btnOpenChat)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnEdit)
         Me.Controls.Add(Me.picImage)
@@ -144,4 +159,5 @@ Partial Class TaskDetails0
     Friend WithEvents picImage As DevExpress.XtraEditors.PictureEdit
     Friend WithEvents btnEdit As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents btnSave As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents btnOpenChat As DevExpress.XtraEditors.SimpleButton
 End Class

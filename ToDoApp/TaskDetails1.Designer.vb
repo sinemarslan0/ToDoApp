@@ -160,7 +160,7 @@ Partial Class TaskDetails1
         Me.btnOpenChat.Cursor = System.Windows.Forms.Cursors.Default
         Me.btnOpenChat.ImageOptions.Image = CType(resources.GetObject("btnOpenChat.ImageOptions.Image"), System.Drawing.Image)
         Me.btnOpenChat.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter
-        Me.btnOpenChat.Location = New System.Drawing.Point(61, 530)
+        Me.btnOpenChat.Location = New System.Drawing.Point(379, 477)
         Me.btnOpenChat.Name = "btnOpenChat"
         Me.btnOpenChat.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light
         Me.btnOpenChat.Size = New System.Drawing.Size(97, 63)

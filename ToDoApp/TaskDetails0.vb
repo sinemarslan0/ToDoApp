@@ -69,4 +69,11 @@ Public Class TaskDetails0
             con.Close()
         End Try
     End Sub
+
+    Private Sub btnOpenChat_Click(sender As Object, e As EventArgs) Handles btnOpenChat.Click
+        Dim chatForm As New Chat()
+        chatForm.TaskID = Me.TaskID 'Send taskID for database
+        chatForm.LoggedInUserID = Login.LoggedInUserID 'Send LoggedInUserID for datase
+        chatForm.Show()
+    End Sub
 End Class
