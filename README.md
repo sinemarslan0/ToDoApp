@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Todo App is a module integrated into the X application. It allows customers to log tasks through the support section when encountering issues. These tasks trigger notification emails to the Support Line or the Business Analysis Team Leader. Customers can add a title, description, and a photo related to the issue. When a task is logged, the creation date and time are recorded in the database.
+The Todo App is a module designed to be integrated into the currently used budgeting application. It allows customers to log tasks through the support section when encountering issues. These tasks trigger notification emails to the Support Line or the Business Analysis Team Leader. Customers can add a title, description, and a photo related to the issue. When a task is logged, the creation date and time are recorded in the database.
 
 Authorized personnel or team leaders can log into the system after receiving the notification email and view the task. They can assign the task to any employee within the company. The designated employee will receive a notification email. Employees can view only tasks assigned to them or their team. They can see the details of the issue and, if a photo was uploaded, view it in a larger format. After completing the task, employees can click the "Done" button, which records the completion time in the database. Upon task completion, the team leader will receive a notification email.
 
